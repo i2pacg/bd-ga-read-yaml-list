@@ -1,7 +1,7 @@
 {
   "name": "GitHub Actions (TypeScript)",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "pnpm install",
   "customizations": {
     "codespaces": {
       "openFiles": ["README.md"]
@@ -22,7 +22,6 @@
         "yzhang.markdown-all-in-one"
       ],
       "settings": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 2,
         "editor.formatOnSave": true,
         "markdown.extension.list.indentationSize": "adaptive",

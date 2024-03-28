@@ -25,6 +25,7 @@
   },
   "scripts": {
     "bundle": "pnpm format:write && pnpm un package",
+    "ci": "pnpm install --force --frozen-lockfile",
     "ci-test": "npx jest",
     "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "npx prettier --write .",
