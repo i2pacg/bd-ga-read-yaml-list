@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install Dependencies
         id: install
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --force --frozen-lockfile
 
       - name: Lint Codebase
         id: super-linter
