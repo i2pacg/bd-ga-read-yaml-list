@@ -1,13 +1,16 @@
 name: Continuous Integration
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
+#  pull_request:
+#    branches:
+#      - main
+#  push:
+#    branches:
+#      - main
+env:
+  STORE_PATH: tmp/pnpm-store
 permissions:
   contents: read
 
@@ -26,23 +29,37 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
-
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+            echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: Cache dependencies (pnpm)
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
+        id: pnpm-ci
+        run: pnpm ci
 
       - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
+        id: pnpm-format-check
+        run: pnpm format:check
 
       - name: Lint
-        id: npm-lint
-        run: npm run lint
+        id: pnpm-lint
+        run: pnpm lint
 
       - name: Test
-        id: npm-ci-test
-        run: npm run ci-test
+        id: pnpm-ci-test
+        run: pnpm run ci-test
 
   test-action:
     name: GitHub Actions Test
